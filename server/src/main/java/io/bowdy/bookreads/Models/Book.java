@@ -1,5 +1,6 @@
 package io.bowdy.bookreads.Models;
 
+import io.bowdy.bookreads.Enums.Status;
 import lombok.*;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
@@ -23,22 +24,28 @@ public class Book {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     private UUID uuid;
-    @Column(name = "title")
+    @Column(name = "title", nullable = false)
     private String title;
-    @Column(name = "author")
+    @Column(name = "author", nullable = false)
     private String author;
-    @Column(name = "genre")
+    @Column(name = "genre", nullable = false)
     private String genre;
     @Column(name = "publisher")
     private String publisher;
-    @Column(name = "year")
+    @Column(name = "year", nullable = false)
     private String year;
     @Column(name = "isbn")
     private String isbn;
+    @Column(name = "pages", nullable = false)
+    private int pages;
     @Column(name = "description")
     private String description;
     @Column(name = "image")
     private String image;
+    @Column(name = "status", nullable = false)
+    private Status status;
+    @Column(name = "rating", nullable = false)
+    private int rating;
 
     @Override
     public boolean equals(Object o) {

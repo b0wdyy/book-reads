@@ -4,6 +4,7 @@ import io.bowdy.bookreads.Models.Book;
 import io.bowdy.bookreads.Repositories.BookRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -23,7 +24,7 @@ public class BooksController {
     }
 
     @PostMapping()
-    public Book create(@RequestBody Book book) {
-        return this.bookRepository.save(book);
+    public ResponseEntity<Book> create(@RequestBody Book book) {
+        return ResponseEntity.status(201).body(this.bookRepository.save(book));
     }
 }

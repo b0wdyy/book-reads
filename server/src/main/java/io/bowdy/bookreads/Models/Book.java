@@ -1,5 +1,6 @@
 package io.bowdy.bookreads.Models;
 
+import com.sun.istack.NotNull;
 import io.bowdy.bookreads.Enums.Status;
 import lombok.*;
 import org.hibernate.Hibernate;
@@ -12,7 +13,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "books")
 public class Book {
@@ -24,27 +26,34 @@ public class Book {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     private UUID uuid;
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", unique = true)
+    @NotNull
     private String title;
-    @Column(name = "author", nullable = false)
+    @NotNull
+    @Column(name = "author")
     private String author;
-    @Column(name = "genre", nullable = false)
+    @Column(name = "genre")
+    @NotNull
     private String genre;
     @Column(name = "publisher")
     private String publisher;
-    @Column(name = "year", nullable = false)
+    @Column(name = "year")
+    @NotNull
     private String year;
-    @Column(name = "isbn")
+    @Column(name = "isbn", unique = true)
     private String isbn;
-    @Column(name = "pages", nullable = false)
+    @Column(name = "pages")
+    @NotNull
     private int pages;
     @Column(name = "description")
     private String description;
     @Column(name = "image")
     private String image;
-    @Column(name = "status", nullable = false)
+    @Column(name = "status")
+    @NotNull
     private Status status;
-    @Column(name = "rating", nullable = false)
+    @Column(name = "rating")
+    @NotNull
     private int rating;
 
     @Override

@@ -1,1 +1,3 @@
-<div class="max-w-xl mx-auto">hoi</div>
+<div class="max-w-xl mx-auto pt-8" *ngIf="books$ | async as books">
+  <bowdy-book-item *ngFor="let book of books" [book]="book"></bowdy-book-item>
+</div>

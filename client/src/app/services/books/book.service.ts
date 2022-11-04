@@ -12,4 +12,8 @@ export class BookService {
   getBooks(): Observable<Book[]> {
     return this.http.get<Book[]>('http://localhost:8088/api/books');
   }
+
+  getBookByUuid(uuid: string) {
+    return this.http.get<Book>(`http://localhost:8088/api/books/${uuid}`);
+  }
 }

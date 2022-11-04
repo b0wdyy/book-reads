@@ -7,4 +7,4 @@ import { TheHeaderComponent } from './the-header/the-header.component';
   imports: [CommonModule],
   exports: [TheHeaderComponent],
 })
-export class LayoutModule { }
+export class LayoutModule {}

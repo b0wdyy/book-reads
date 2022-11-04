@@ -45,7 +45,7 @@ public class Book {
     @Column(name = "pages")
     @NotNull
     private int pages;
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "text")
     private String description;
     @Column(name = "image")
     private String image;

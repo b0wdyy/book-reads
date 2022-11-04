@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/books")
@@ -65,7 +66,13 @@ public class BooksController {
         return ResponseEntity.status(201).body(this.bookRepository.save(book));
     }
 
-    @GetMapping("/{filename}")
+    @GetMapping("/{uuid}")
+    public ResponseEntity<Book> getBookByUuid(@PathVariable("uuid") UUID uuid) {
+        Book book = this.bookRepository.findByUuid(uuid);
+        return ResponseEntity.ok(book);
+    }
+
+    @GetMapping("/image/{filename}")
     public ResponseEntity<byte[]> downloadImage(@PathVariable("filename") String filename) throws IOException {
         String filepath = FOLDER_PATH + "/storage/" + filename;
         byte[] image = Files.readAllBytes(new File(filepath).toPath());

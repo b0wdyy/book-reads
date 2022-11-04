@@ -4,7 +4,7 @@ import { Book } from 'src/app/models/book';
 import { BookService } from 'src/app/services/books/book.service';
 
 @Component({
-  selector: 'bowdy-book-overview',
+  selector: 'book-overview',
   templateUrl: './book-overview.component.html',
   styleUrls: ['./book-overview.component.scss'],
 })

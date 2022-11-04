@@ -1,0 +1,30 @@
+<a
+  [routerLink]="['..']"
+  class="mt-4 block text-center font-bold text-indigo-700"
+  >< Back to overview</a
+>
+
+<div
+  class="mx-auto grid max-w-5xl items-start gap-8 p-8 md:grid-cols-5"
+  *ngIf="book$ | async as book">
+  <aside class="col-span-2 rounded-lg bg-white p-4 shadow-md shadow-indigo-100">
+    <img
+      class="rounded-md"
+      [src]="'http://localhost:8088/api/books/image/' + book.image"
+      [alt]="'cover of ' + book.title" />
+  </aside>
+
+  <main class="col-span-3">
+    <section>
+      <h1 class="text-3xl font-bold">{{ book.title }}</h1>
+      <small class="text-slate-400">{{ book.author }}</small>
+    </section>
+
+    <hr class="my-2" />
+
+    <small class="block text-slate-400">{{ book.pages }} pages</small>
+    <small class="block text-slate-400">brought out in {{ book.year }}</small>
+
+    <p class="mt-4">{{ book.description }}</p>
+  </main>
+</div>

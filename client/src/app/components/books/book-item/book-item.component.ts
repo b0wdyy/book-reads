@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Book } from 'src/app/models/book';
 
 @Component({
-  selector: 'bowdy-book-item',
+  selector: 'book-item',
   templateUrl: './book-item.component.html',
 })
 export class BookItemComponent {
@@ -11,6 +11,6 @@ export class BookItemComponent {
   constructor() {}
 
   get bookImageUrl() {
-    return `http://localhost:8088/api/books/${this.book.image}`;
+    return `http://localhost:8088/api/books/image/${this.book.image}`;
   }
 }

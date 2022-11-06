@@ -1,5 +1,6 @@
 package io.bowdy.bookreads.Controllers;
 
+import io.bowdy.bookreads.DTO.SuccessResponseDTO;
 import io.bowdy.bookreads.Enums.Status;
 import io.bowdy.bookreads.Models.Book;
 import io.bowdy.bookreads.Repositories.BookRepository;
@@ -66,6 +67,28 @@ public class BooksController {
         }
 
         return ResponseEntity.status(201).body(this.bookRepository.save(book));
+    }
+
+    @PutMapping("/{uuid}")
+    public ResponseEntity<SuccessResponseDTO> updateBook(@PathVariable("uuid") UUID uuid, @RequestBody Book book) {
+        try {
+            Book bookToUpdate = this.bookRepository.getReferenceById(uuid);
+            bookToUpdate.setTitle(book.getTitle());
+            bookToUpdate.setAuthor(book.getAuthor());
+            bookToUpdate.setIsbn(book.getIsbn());
+            bookToUpdate.setPublisher(book.getPublisher());
+            bookToUpdate.setYear(book.getYear());
+            bookToUpdate.setStatus(book.getStatus());
+            bookToUpdate.setRating(book.getRating());
+            bookToUpdate.setDescription(book.getDescription());
+            bookToUpdate.setPages(book.getPages());
+            bookToUpdate.setGenre(book.getGenre());
+            this.bookRepository.save(bookToUpdate);
+
+            return ResponseEntity.ok(SuccessResponseDTO.builder().success(true).message("Successfully updated book with id " + bookToUpdate.getUuid()).build());
+        } catch (Exception e) {
+            return ResponseEntity.ok(SuccessResponseDTO.builder().success(false).message(e.getMessage()).build());
+        }
     }
 
     @GetMapping("/{uuid}")

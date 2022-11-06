@@ -1,14 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'book-rating',
-  templateUrl: './book-rating.component.html'
+  selector: 'bowdy-book-rating',
+  templateUrl: './book-rating.component.html',
 })
 export class BookRatingComponent implements OnInit {
+  @Input() rating!: number;
 
   constructor() { }
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void { }
 }

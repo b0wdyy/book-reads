@@ -9,4 +9,5 @@ export interface Book {
   pages: number;
   description: string;
   image?: string;
+  rating: number;
 }

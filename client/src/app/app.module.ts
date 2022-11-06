@@ -7,7 +7,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { PageNotFoundComponent } from './pages/layouts/page-not-found/page-not-found.component';
 import { BooksModule } from './pages/books/books.module';
 import { LayoutModule } from './components/layouts/layout.module';
-import { BookRatingComponent } from './components/books/book-rating/book-rating.component';
 
 @NgModule({
   declarations: [AppComponent, PageNotFoundComponent],

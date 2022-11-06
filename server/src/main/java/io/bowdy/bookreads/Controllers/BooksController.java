@@ -44,6 +44,7 @@ public class BooksController {
                                        @RequestParam("pages") int pages,
                                        @RequestParam("status") Status status,
                                        @RequestParam("description") String description,
+                                       @RequestParam("rating") int rating,
                                        @RequestParam("image") MultipartFile file) {
         Book book = new Book();
         String filePath = FOLDER_PATH + "/storage/" + file.getOriginalFilename();
@@ -57,6 +58,7 @@ public class BooksController {
         book.setPages(pages);
         book.setStatus(status);
         book.setDescription(description);
+        book.setRating(rating);
         try {
             file.transferTo(new File(filePath));
         } catch (IOException e) {

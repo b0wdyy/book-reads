@@ -1,7 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { BookOverviewComponent } from './book-overview.component';
+import {BookOverviewComponent} from './book-overview.component';
 import {HttpClientTestingModule} from "@angular/common/http/testing";
+import {CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
 
 describe('BookOverviewComponent', () => {
   let component: BookOverviewComponent;
@@ -11,6 +12,7 @@ describe('BookOverviewComponent', () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       declarations: [BookOverviewComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
 
     fixture = TestBed.createComponent(BookOverviewComponent);

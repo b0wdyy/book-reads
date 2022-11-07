@@ -28,7 +28,7 @@ jobs:
       - name: install dependencies
         run: yarn
       - name: run tests
-        run: yarn test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
+        run: yarn test --no-watch --no-progress --browsers=ChromeHeadlessCI
 
   build:
     runs-on: ubuntu-latest

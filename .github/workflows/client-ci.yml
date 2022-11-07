@@ -28,7 +28,7 @@ jobs:
         run: yarn test
 
   build:
-    depends-on: test
+    needs: test
     runs-on: ubuntu-latest
     strategy:
       matrix:

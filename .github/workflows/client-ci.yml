@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ "main" ]
 
+defaults:
+  run:
+    working-directory: client
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -21,8 +25,6 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
           cache-dependency-path: client/yarn.lock
-      - name: cd to client folder
-        run: cd client
       - name: install dependencies
         run: yarn
       - name: run tests
@@ -42,8 +44,6 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
           cache-dependency-path: client/yarn.lock
-      - name: cd to client folder
-        run: cd client
       - name: install dependencies
         run: yarn
       - name: test repo

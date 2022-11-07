@@ -7,33 +7,35 @@ on:
     branches: [ "main" ]
 
 jobs:
-     build:
-       runs-on: ubuntu-latest
-       strategy:
-         matrix:
-           node-version: [14.x, 16.x, 18.x]
-       steps:
-         - uses: actions/checkout@v3
-         - name: Use Node.js ${{ matrix.node-version }}
-         - name: cd to client folder
-           uses: actions/setup-node@v3
-           with:
-             node-version: ${{ matrix.node-version }}
-             cache: 'yarn'
-         - run: yarn
-         - run: yarn test
-     test:
-       runs-on: ubuntu-latest
-       strategy:
-         matrix:
-           node-version: [14.x, 16.x, 18.x]
-       steps:
-         - uses: actions/checkout@v3
-         - name: Use Node.js ${{ matrix.node-version }}
-         - run: cd client
-           uses: actions/setup-node@v3
-           with:
-             node-version: ${{ matrix.node-version }}
-             cache: 'yarn'
-         - run: yarn
-         - run: yarn build
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x, 18.x]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+      - name: cd to client folder
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+      - run: yarn
+      - run: yarn test
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x, 18.x]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+      - name: cd to client folder
+      - run: cd client
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'yarn'
+      - run: yarn
+      - run: yarn build

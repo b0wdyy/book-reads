@@ -8,8 +8,10 @@ on:
 
 jobs:
      build:
-       matrix:
-         node-version: [14.x, 16.x, 18.x]
+       runs-on: ubuntu-latest
+       strategy:
+         matrix:
+           node-version: [14.x, 16.x, 18.x]
        steps:
          - uses: actions/checkout@v3
          - name: Use Node.js ${{ matrix.node-version }}
@@ -21,19 +23,19 @@ jobs:
          - run: yarn
          # run tests
          - run: yarn test
-       test:
-         runs-on: ubuntu-latest
-         strategy:
-           matrix:
-             node-version: [14.x, 16.x, 18.x]
-         steps:
-           - uses: actions/checkout@v3
-           - name: Use Node.js ${{ matrix.node-version }}
-             uses: actions/setup-node@v3
-             with:
-               node-version: ${{ matrix.node-version }}
-               cache: 'yarn'
-           # install dependencies
-           - run: yarn
-           # make sure there are no build errors
-           - run: yarn build
+     test:
+       runs-on: ubuntu-latest
+       strategy:
+         matrix:
+           node-version: [14.x, 16.x, 18.x]
+       steps:
+         - uses: actions/checkout@v3
+         - name: Use Node.js ${{ matrix.node-version }}
+           uses: actions/setup-node@v3
+           with:
+             node-version: ${{ matrix.node-version }}
+             cache: 'yarn'
+         # install dependencies
+         - run: yarn
+         # make sure there are no build errors
+         - run: yarn build

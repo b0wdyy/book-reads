@@ -15,15 +15,14 @@ jobs:
     steps:
       - name: checkout repo
         uses: actions/checkout@v3
-      - name: cd to client folder
-        run: cd client
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
+          cache-dependency-path: client/yarn.lock
       - name: install dependencies
-        run: ls && yarn
+        run: yarn
       - name: run tests
         run: yarn test
 
@@ -35,13 +34,12 @@ jobs:
         node-version: [14.x, 16.x, 18.x]
     steps:
       - uses: actions/checkout@v3
-      - name: cd to client folder
-        run: cd client
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
+          cache-dependency-path: client/yarn.lock
       - name: install dependencies
         run: yarn
       - name: test repo

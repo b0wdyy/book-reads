@@ -19,7 +19,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/books")
-@CrossOrigin("http://localhost:4200")
 public class BooksController {
     private final BookRepository bookRepository;
     private final String FOLDER_PATH = Paths.get("").toAbsolutePath().toString();

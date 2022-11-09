@@ -20,7 +20,7 @@ import java.util.UUID;
 public class Book {
     @Id
     @GeneratedValue(generator = "UUID",
-            strategy = GenerationType.AUTO)
+            strategy = GenerationType.IDENTITY)
     @GenericGenerator(
             name = "id",
             strategy = "org.hibernate.id.UUIDGenerator"

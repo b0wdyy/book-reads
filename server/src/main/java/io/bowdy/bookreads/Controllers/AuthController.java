@@ -4,45 +4,96 @@ import io.bowdy.bookreads.DTO.JwtResponseDTO;
 import io.bowdy.bookreads.DTO.LoginRequestDTO;
 import io.bowdy.bookreads.DTO.RegisterRequestDTO;
 import io.bowdy.bookreads.DTO.SuccessResponseDTO;
-import io.bowdy.bookreads.Service.UserService;
+import io.bowdy.bookreads.Enums.ERole;
+import io.bowdy.bookreads.Models.Role;
+import io.bowdy.bookreads.Models.User;
+import io.bowdy.bookreads.Repositories.RoleRepository;
+import io.bowdy.bookreads.Repositories.UserRepository;
+import io.bowdy.bookreads.Util.JwtUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-    private final UserService userService;
 
-    public AuthController(UserService userService) {
-        this.userService = userService;
+    private final AuthenticationManager authenticationManager;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
+
+    @Autowired
+    public AuthController(AuthenticationManager authenticationManager, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
+        this.authenticationManager = authenticationManager;
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtUtil = jwtUtil;
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequest) {
-        try {
-            JwtResponseDTO jwtResponseDTO = this.userService.loginUser(loginRequest);
-            return ResponseEntity.ok(jwtResponseDTO);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        Authentication authentication = this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                loginRequest.getUsername(),
+                loginRequest.getPassword()
+        ));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = this.jwtUtil.generateToken(authentication);
+        Optional<User> optionalUser = this.userRepository.findByUsername(this.jwtUtil.getUsernameFromToken(token));
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            JwtResponseDTO response = new JwtResponseDTO();
+            response.setUsername(user.getUsername());
+            response.setToken(token);
+            response.setRoles(user.getRoles());
+            return ResponseEntity.ok(response);
         }
+
+        return this.response(HttpStatus.BAD_REQUEST, "User not found", false);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<SuccessResponseDTO> register(@RequestBody RegisterRequestDTO registerRequest) {
-        try {
-            this.userService.registerUser(registerRequest);
-            
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .body(SuccessResponseDTO.builder().success(true).message("Account created").build());
-        } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(SuccessResponseDTO.builder().success(false).message(e.getMessage()).build());
+    public ResponseEntity<?> register(@RequestBody RegisterRequestDTO registerRequest) {
+        if (this.userRepository.existsByUsername(registerRequest.getUsername())) {
+            return this.response(HttpStatus.BAD_REQUEST, "Username already taken", false);
         }
+        User user = new User();
+        user.setUsername(registerRequest.getUsername());
+        user.setEmail(registerRequest.getEmail());
+        user.setPassword(this.passwordEncoder.encode(registerRequest.getPassword()));
+
+        Optional<Role> roles = this.roleRepository.findByName(ERole.ROLE_USER);
+        if (roles.isEmpty()) {
+            return this.response(HttpStatus.BAD_REQUEST, "Role not found", false);
+        }
+        user.setRoles(Collections.singleton(roles.get()));
+        this.userRepository.save(user);
+
+        return this.response(HttpStatus.CREATED, "User created", true);
+    }
+
+    private ResponseEntity<?> response(HttpStatus status, String message, Boolean success) {
+        return ResponseEntity
+                .status(status)
+                .body(SuccessResponseDTO
+                        .builder()
+                        .message(message)
+                        .success(success)
+                        .build()
+                );
     }
 }

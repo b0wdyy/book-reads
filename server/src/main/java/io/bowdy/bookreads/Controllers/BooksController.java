@@ -7,6 +7,7 @@ import io.bowdy.bookreads.Repositories.BookRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,6 +36,7 @@ public class BooksController {
     }
 
     @PostMapping()
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Book> create(@RequestParam("title") String title,
                                        @RequestParam("author") String author,
                                        @RequestParam("genre") String genre,
@@ -69,6 +71,7 @@ public class BooksController {
     }
 
     @PutMapping("/{uuid}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<SuccessResponseDTO> updateBook(@PathVariable("uuid") UUID uuid, @RequestBody Book book) {
         try {
             Book bookToUpdate = this.bookRepository.getReferenceById(uuid);

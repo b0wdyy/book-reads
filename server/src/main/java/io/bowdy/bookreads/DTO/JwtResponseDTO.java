@@ -1,9 +1,10 @@
 package io.bowdy.bookreads.DTO;
 
+import io.bowdy.bookreads.Models.Role;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -12,5 +13,5 @@ public class JwtResponseDTO {
     private String type = "Bearer";
     private Long id;
     private String username;
-    private List<String> roles;
+    private Set<Role> roles;
 }

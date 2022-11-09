@@ -1,51 +1,54 @@
 package io.bowdy.bookreads.Util;
 
-import io.bowdy.bookreads.Service.UserDetailsImpl;
-import io.jsonwebtoken.*;
-import lombok.extern.log4j.Log4j2;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
 @Component
-@Log4j2
 public class JwtUtil {
-    @Value("${bowdy.app.jwtSecret}")
-    private String jwtSecret;
-    @Value("${bowdy.app.jwtExpirationMs}")
-    private int jwtExpirationMs;
+    private final String JWT_SECRET;
+    private final int JWT_EXPIRATION;
 
-    public String generateJwtToken(Authentication authentication) {
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        return Jwts
-                .builder()
-                .setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + this.jwtExpirationMs)).signWith(SignatureAlgorithm.HS512, this.jwtSecret)
+    public JwtUtil(@Value("${app.jwtSecret}") String jwt_secret, @Value("${app.jwtExpirationMs}") int jwt_expiration) {
+        this.JWT_SECRET = jwt_secret;
+        this.JWT_EXPIRATION = jwt_expiration;
+    }
+
+
+    public String generateToken(Authentication authentication) {
+        String username = authentication.getName();
+        Date currentDate = new Date();
+        Date expireDate = new Date(currentDate.getTime() + this.JWT_EXPIRATION);
+
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(currentDate)
+                .setExpiration(expireDate)
+                .signWith(SignatureAlgorithm.HS512, this.JWT_SECRET)
                 .compact();
     }
 
-    public String getUserNameFromJwtToken(String token) {
-        return Jwts.parser().setSigningKey(this.jwtSecret).parseClaimsJws(token).getBody().getSubject();
+    public String getUsernameFromToken(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(this.JWT_SECRET)
+                .parseClaimsJws(token)
+                .getBody();
+
+        return claims.getSubject();
     }
 
-    public boolean validateJwtToken(String authToken) {
+    public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
+            Jwts.parser().setSigningKey(this.JWT_SECRET).parseClaimsJws(token);
             return true;
-        } catch (SignatureException e) {
-            log.error("Invalid JWT signature: {}", e.getMessage());
-        } catch (MalformedJwtException e) {
-            log.error("Invalid JWT token: {}", e.getMessage());
-        } catch (ExpiredJwtException e) {
-            log.error("JWT token is expired: {}", e.getMessage());
-        } catch (UnsupportedJwtException e) {
-            log.error("JWT token is unsupported: {}", e.getMessage());
-        } catch (IllegalArgumentException e) {
-            log.error("JWT claims string is empty: {}", e.getMessage());
+        } catch (Exception ex) {
+            throw new AuthenticationCredentialsNotFoundException("JWT was expired or incorrect");
         }
-        return false;
     }
 }

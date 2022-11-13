@@ -4,11 +4,9 @@ import com.sun.istack.NotNull;
 import io.bowdy.bookreads.Enums.Status;
 import lombok.*;
 import org.hibernate.Hibernate;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Objects;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -19,13 +17,8 @@ import java.util.UUID;
 @Table(name = "books")
 public class Book {
     @Id
-    @GeneratedValue(generator = "UUID",
-            strategy = GenerationType.IDENTITY)
-    @GenericGenerator(
-            name = "id",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    private UUID uuid;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @Column(name = "title", unique = true)
     @NotNull
     private String title;
@@ -61,7 +54,7 @@ public class Book {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         Book book = (Book) o;
-        return uuid != null && Objects.equals(uuid, book.uuid);
+        return id != null && Objects.equals(id, book.id);
     }
 
     @Override

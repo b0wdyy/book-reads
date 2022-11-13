@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -53,7 +52,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book updateBook(Book book, UUID id) throws Exception {
+    public Book updateBook(Book book, Long id) throws Exception {
         Optional<Book> optionalBook = this.bookRepository.findById(id);
         if (optionalBook.isEmpty()) {
             throw new Exception("Book not found");
@@ -75,16 +74,26 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void deleteBook(UUID id) {
-
+    public void deleteBook(Long id) {
+        this.bookRepository.deleteById(id);
     }
 
     @Override
-    public Book findOne(UUID uuid) {
-        Optional<Book> optionalBook = this.bookRepository.findById(uuid);
+    public Book findOne(Long id) {
+        Optional<Book> optionalBook = this.bookRepository.findById(id);
         if (optionalBook.isEmpty()) {
             return null;
         }
         return optionalBook.get();
+    }
+
+    @Override
+    public void deleteAll() {
+        this.bookRepository.deleteAll();
+    }
+
+    @Override
+    public void batchInsert(List<Book> books) {
+        this.bookRepository.saveAll(books);
     }
 }

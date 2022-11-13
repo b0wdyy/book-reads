@@ -14,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/books")
@@ -59,21 +58,21 @@ public class BooksController {
         return ResponseEntity.status(201).body(book);
     }
 
-    @PutMapping("/{uuid}")
+    @PutMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<SuccessResponseDTO> updateBook(@PathVariable("uuid") UUID uuid, @RequestBody Book book) {
+    public ResponseEntity<SuccessResponseDTO> updateBook(@PathVariable("id") Long id, @RequestBody Book book) {
         try {
-            Book updatedBook = this.bookService.updateBook(book, uuid);
+            Book updatedBook = this.bookService.updateBook(book, id);
 
-            return ResponseEntity.ok(SuccessResponseDTO.builder().success(true).message("Successfully updated book with id " + updatedBook.getUuid()).build());
+            return ResponseEntity.ok(SuccessResponseDTO.builder().success(true).message("Successfully updated book with id " + updatedBook.getId()).build());
         } catch (Exception e) {
             return ResponseEntity.ok(SuccessResponseDTO.builder().success(false).message(e.getMessage()).build());
         }
     }
 
-    @GetMapping("/{uuid}")
-    public ResponseEntity<Book> getBookByUuid(@PathVariable("uuid") UUID uuid) {
-        Book book = this.bookService.findOne(uuid);
+    @GetMapping("/{id}")
+    public ResponseEntity<Book> getBookById(@PathVariable("id") Long id) {
+        Book book = this.bookService.findOne(id);
         return ResponseEntity.ok(book);
     }
 

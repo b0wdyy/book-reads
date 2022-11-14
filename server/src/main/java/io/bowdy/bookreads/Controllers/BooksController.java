@@ -1,7 +1,7 @@
 package io.bowdy.bookreads.Controllers;
 
 import io.bowdy.bookreads.DTO.SuccessResponseDTO;
-import io.bowdy.bookreads.Enums.Status;
+import io.bowdy.bookreads.Enums.EStatus;
 import io.bowdy.bookreads.Models.Book;
 import io.bowdy.bookreads.Service.BookServiceImpl;
 import io.bowdy.bookreads.Util.ImageUtil;
@@ -40,7 +40,7 @@ public class BooksController {
                                        @RequestParam("publisher") String publisher,
                                        @RequestParam("isbn") String isbn,
                                        @RequestParam("pages") int pages,
-                                       @RequestParam("status") Status status,
+                                       @RequestParam("EStatus") EStatus EStatus,
                                        @RequestParam("description") String description,
                                        @RequestParam("rating") int rating,
                                        @RequestParam("image") MultipartFile file) {
@@ -51,7 +51,7 @@ public class BooksController {
                 publisher,
                 isbn,
                 pages,
-                status,
+                EStatus,
                 description,
                 rating,
                 file);

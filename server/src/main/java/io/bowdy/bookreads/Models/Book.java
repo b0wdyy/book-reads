@@ -1,7 +1,7 @@
 package io.bowdy.bookreads.Models;
 
 import com.sun.istack.NotNull;
-import io.bowdy.bookreads.Enums.Status;
+import io.bowdy.bookreads.Enums.EStatus;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -44,7 +44,7 @@ public class Book {
     private String image;
     @Column(name = "status")
     @NotNull
-    private Status status;
+    private EStatus EStatus;
     @Column(name = "rating")
     @NotNull
     private int rating;

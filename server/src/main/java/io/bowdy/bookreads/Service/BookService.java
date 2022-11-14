@@ -1,6 +1,6 @@
 package io.bowdy.bookreads.Service;
 
-import io.bowdy.bookreads.Enums.Status;
+import io.bowdy.bookreads.Enums.EStatus;
 import io.bowdy.bookreads.Models.Book;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,7 +16,7 @@ public interface BookService {
                   String publisher,
                   String isbn,
                   int pages,
-                  Status status,
+                  EStatus EStatus,
                   String description,
                   int rating,
                   MultipartFile file);

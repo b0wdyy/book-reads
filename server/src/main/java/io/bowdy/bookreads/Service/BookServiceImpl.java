@@ -1,6 +1,6 @@
 package io.bowdy.bookreads.Service;
 
-import io.bowdy.bookreads.Enums.Status;
+import io.bowdy.bookreads.Enums.EStatus;
 import io.bowdy.bookreads.Models.Book;
 import io.bowdy.bookreads.Repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book saveBook(String title, String author, String genre, String year, String publisher, String isbn, int pages, Status status, String description, int rating, MultipartFile file) {
+    public Book saveBook(String title, String author, String genre, String year, String publisher, String isbn, int pages, EStatus EStatus, String description, int rating, MultipartFile file) {
         Book book = new Book();
         String filePath = FOLDER_PATH + "/storage/" + file.getOriginalFilename();
         book.setImage(file.getOriginalFilename());
@@ -40,7 +40,7 @@ public class BookServiceImpl implements BookService {
         book.setPublisher(publisher);
         book.setIsbn(isbn);
         book.setPages(pages);
-        book.setStatus(status);
+        book.setEStatus(EStatus);
         book.setDescription(description);
         book.setRating(rating);
         try {
@@ -63,7 +63,7 @@ public class BookServiceImpl implements BookService {
         bookToUpdate.setIsbn(book.getIsbn());
         bookToUpdate.setPublisher(book.getPublisher());
         bookToUpdate.setYear(book.getYear());
-        bookToUpdate.setStatus(book.getStatus());
+        bookToUpdate.setEStatus(book.getEStatus());
         bookToUpdate.setRating(book.getRating());
         bookToUpdate.setDescription(book.getDescription());
         bookToUpdate.setPages(book.getPages());
@@ -89,7 +89,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void deleteAll() {
-        this.bookRepository.deleteAll();
+        this.bookRepository.deleteAllInBatch();
     }
 
     @Override

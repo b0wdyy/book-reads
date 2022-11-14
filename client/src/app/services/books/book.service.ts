@@ -1,19 +1,20 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Book } from 'src/app/models/book';
+import { environment } from '../../../environments/environment';
+import { Book } from '../../models/book';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BookService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getBooks(): Observable<Book[]> {
-    return this.http.get<Book[]>('http://localhost:8088/api/books');
+    return this.http.get<Book[]>(`${environment.baseUrl}/books`);
   }
 
   getBookByUuid(uuid: string) {
-    return this.http.get<Book>(`http://localhost:8088/api/books/${uuid}`);
+    return this.http.get<Book>(`${environment.baseUrl}/books/${uuid}`);
   }
 }

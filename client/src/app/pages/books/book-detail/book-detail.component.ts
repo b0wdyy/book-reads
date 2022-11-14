@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Observable} from 'rxjs';
-import {Book} from 'src/app/models/book';
-import {BookService} from "../../../services/books/book.service";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { Book } from '../../../models/book';
+import { BookService } from '../../../services/books/book.service';
 
 @Component({
   selector: 'bowdy-book-detail',
@@ -14,8 +14,7 @@ export class BookDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private bookService: BookService
-  ) {
-  }
+  ) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(p => {

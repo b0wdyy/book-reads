@@ -1,7 +1,7 @@
 <the-header></the-header>
 
 <div
-  class="max-w-xl mx-auto pt-8 flex flex-col gap-12"
+  class="mx-auto flex max-w-xl flex-col gap-12 pt-8"
   *ngIf="books$ | async as books">
-  <book-item *ngFor="let book of books" [book]="book"></book-item>
+  <bowdy-book-item *ngFor="let book of books" [book]="book"></bowdy-book-item>
 </div>

@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
 @RequestMapping("/books")
 public class BooksController {
@@ -40,7 +41,7 @@ public class BooksController {
                                        @RequestParam("publisher") String publisher,
                                        @RequestParam("isbn") String isbn,
                                        @RequestParam("pages") int pages,
-                                       @RequestParam("EStatus") EStatus EStatus,
+                                       @RequestParam("status") EStatus status,
                                        @RequestParam("description") String description,
                                        @RequestParam("rating") int rating,
                                        @RequestParam("image") MultipartFile file) {
@@ -51,7 +52,7 @@ public class BooksController {
                 publisher,
                 isbn,
                 pages,
-                EStatus,
+                status,
                 description,
                 rating,
                 file);

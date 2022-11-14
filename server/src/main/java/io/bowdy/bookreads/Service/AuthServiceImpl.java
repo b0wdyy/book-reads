@@ -48,7 +48,7 @@ public class AuthServiceImpl implements AuthService {
         user.setEmail(registerRequest.getEmail());
         user.setPassword(this.passwordEncoder.encode(registerRequest.getPassword()));
 
-        Optional<Role> roles = this.roleRepository.findByName(ERole.ROLE_USER);
+        Optional<Role> roles = this.roleRepository.findByName(ERole.ROLE_ADMIN);
         if (roles.isEmpty()) {
             return this.response(HttpStatus.BAD_REQUEST, "Role not found", false);
         }

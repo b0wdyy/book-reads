@@ -44,7 +44,7 @@ public class Book {
     private String image;
     @Column(name = "status")
     @NotNull
-    private EStatus EStatus;
+    private EStatus status;
     @Column(name = "rating")
     @NotNull
     private int rating;

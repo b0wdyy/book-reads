@@ -29,7 +29,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book saveBook(String title, String author, String genre, String year, String publisher, String isbn, int pages, EStatus EStatus, String description, int rating, MultipartFile file) {
+    public Book saveBook(String title, String author, String genre, String year, String publisher, String isbn, int pages, EStatus status, String description, int rating, MultipartFile file) {
         Book book = new Book();
         String filePath = FOLDER_PATH + "/storage/" + file.getOriginalFilename();
         book.setImage(file.getOriginalFilename());
@@ -40,7 +40,7 @@ public class BookServiceImpl implements BookService {
         book.setPublisher(publisher);
         book.setIsbn(isbn);
         book.setPages(pages);
-        book.setEStatus(EStatus);
+        book.setStatus(status);
         book.setDescription(description);
         book.setRating(rating);
         try {
@@ -63,7 +63,7 @@ public class BookServiceImpl implements BookService {
         bookToUpdate.setIsbn(book.getIsbn());
         bookToUpdate.setPublisher(book.getPublisher());
         bookToUpdate.setYear(book.getYear());
-        bookToUpdate.setEStatus(book.getEStatus());
+        bookToUpdate.setStatus(book.getStatus());
         bookToUpdate.setRating(book.getRating());
         bookToUpdate.setDescription(book.getDescription());
         bookToUpdate.setPages(book.getPages());
